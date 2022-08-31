@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="view_student_tree" model="ir.ui.view">
+        <field name="name">school.student.tree</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="student_name"/>
+                <field name="gender"/>
+                <field name="student_class"/>
+                <field name="student_sub"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_student_form" model="ir.ui.view">
+        <field name="name">school.student.form</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <header>
+                <button name="action_confirm" type="object" string="Click"/>
+            </header>
+            <form>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="student_name"/>
+                        <field name="gender"/>
+                    </group>
+                    <group>
+                        <field name="student_class"/>
+                        <field name="student_sub"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_student_kanban" model="ir.ui.view">
+        <field name="name">school.student.kanban</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="student_name"/>
+                <field name="gender"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <ul>
+                                    <li>
+                                        <field name="student_name"/>
+                                    </li>
+                                    <li>
+                                        <field name="student_class"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+     <record id="view_student_pivot" model="ir.ui.view">
+            <field name="name">school.student.pivot</field>
+            <field name="model">school.student</field>
+            <field name="arch" type="xml">
+                <pivot string="Student">
+                    <field name="name" type="col"/>
+                    <field name="student_name" type="row"/>
+<!--                    <field name="student_class"/>-->
+                </pivot>
+            </field>
+        </record>
+
+     <record id="view_student_graph" model="ir.ui.view">
+            <field name="name">school.student.graph</field>
+            <field name="model">school.student</field>
+            <field name="arch" type="xml">
+                <graph string="Student">
+                    <field name="student_class"/>
+                    <field name="gender"/>
+                </graph>
+            </field>
+        </record>
+
+    <record id="student_action" model="ir.actions.act_window">
+        <field name="name">Student</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">school.student</field>
+        <field name="view_mode">tree,form,kanban,pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Student
+            </p>
+        </field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem id="school_root"
+              name="School"
+              sequence="1"/>
+
+    <menuitem id="school_student_root"
+              name="Student"
+              parent="school_root"
+              sequence="2"/>
+
+    <menuitem id="school_student"
+              name="Student"
+              parent="school_student_root"
+              action="student_action"
+              sequence="2"/>
+
+</odoo>

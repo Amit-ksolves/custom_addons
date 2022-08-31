@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_teacher_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='coach_id']" position="after">
+                    <field name="name"/>
+                </xpath>
+            </field>
+        </record>
+
+    <record id="view_teacher_form" model="ir.ui.view">
+        <field name="name">class.teacher.form</field>
+        <field name="model">class.teacher</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="teacher_class"/>
+                    </group>
+                    <group>
+<!--                        <field name="student_class"/>-->
+<!--                        <field name="student_sub"/>-->
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="teacher_action" model="ir.actions.act_window">
+        <field name="name">Teacher</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">class.teacher</field>
+        <field name="view_mode">form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Teacher
+            </p>
+        </field>
+    </record>
+
+     <menuitem id="school_root"
+              name="School"
+              sequence="1"/>
+
+    <menuitem id="class_teacher_root"
+              name="Teacher"
+              parent="school_root"
+              sequence="2"/>
+
+    <menuitem id="class_teacher"
+              name="Teacher"
+              parent="class_teacher_root"
+              action="teacher_action"
+              sequence="2"/>
+
+
+</odoo>

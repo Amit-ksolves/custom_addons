@@ -1,0 +1,13 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_school_student,access.school.student,model_school_student,school_management.school_management_student,1,0,0,0
+access_school_admin,access.school.admin,model_school_student,school_management.school_management_admin,1,1,1,1
+
+access_school_student,access.school.student,model_school_student,base.group_user,1,1,1,1
+access_student_class,access.student.class,model_student_class,base.group_user,1,1,1,1
+access_student_fees,access.student.fees,model_student_fees,base.group_user,1,1,1,1
+access_student_subjects,access.student.subjects,model_student_subjects,base.group_user,1,1,1,1
+access_student_subjects,access.student.subjects,school_management.model_student_subjects,,1,1,1,1
+
+access_class_teacher,access.class.teacher,model_class_teacher,base.group_user,1,1,1,1
+access_student_exams,access.student.exams,model_student_exams,base.group_user,1,1,1,1
+access_fee_structure,access.fee.structure,model_fee_structure,base.group_user,1,1,1,1
