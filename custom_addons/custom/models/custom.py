@@ -10,23 +10,49 @@ class SaleOrder(models.Model):
 class SaleInvoiceAdvance(models.TransientModel):
     _inherit = "sale.advance.payment.inv"
 
-    def create_invoices(self):
-        res = super(SaleInvoiceAdvance, self).create_invoices()
+    # def create_invoices(self):
+    #     res = super(SaleInvoiceAdvance, self).create_invoices()
+    #     active_id = self._context.get('active_id')
+    #     if active_id:
+    #         order_id = self.env['sale.order'].browse(active_id)
+    #         custom_order = self.env['account.move'].search([('invoice_origin', '=', 'order_id.name')])
+    #         for rec in order_id.sale_lines:
+    #             data ={
+    #                  'account_custom_id': custom_order.id, 'product_id': rec.product_id.id, 'name': rec.name,
+    #                     'quantity': rec.quantity, 'price_unit': rec.price_unit, 'price_subtotal': rec.price_subtotal
+    #                 }
+    #             print(order_id.name)
+    #             print(data)
+    #             account_line = self.env['account.custom.line'].create(data)
+    #             print(account_line)
+    #     return res
 
+    def _create_invoice(self):
+        invoice = super(SaleInvoiceAdvance, self)._create_invoice()
         active_id = self._context.get('active_id')
+        invoice_data = self._prepare_invoice_values()
         if active_id:
             order_id = self.env['sale.order'].browse(active_id)
-            custom_order = self.env['account.move'].search([('invoice_origin', '=', 'order_id.name')])
             for rec in order_id.sale_lines:
-                data ={
-                     'account_custom_id': custom_order.id, 'product_id': rec.product_id.id, 'name': rec.name,
-                        'quantity': rec.quantity, 'price_unit': rec.price_unit, 'price_subtotal': rec.price_subtotal
-                    }
-                print(custom_order.id)
-                print(data)
+                data = {
+                 'product_id': rec.product_id.id, 'name': rec.name,
+                    'quantity': rec.quantity, 'price_unit': rec.price_unit, 'price_subtotal': rec.price_subtotal
+                }
                 account_line = self.env['account.custom.line'].create(data)
                 print(account_line)
-        return res
+        return invoice
+
+    def _prepare_invoice_values(self):
+        invoice_data = {
+            'account_custom_lines': [({
+                'name': self.name,
+                'price_unit': self.price_unit,
+                'quantity': self.quantity,
+                'product_id': self.product_id.id,
+                'price_subtotal': self.price_subtotal
+            })],
+        }
+        return invoice_data
 
     # def action_confirm(self):
     #     for rec in self:
