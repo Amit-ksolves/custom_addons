@@ -10,6 +10,7 @@
         'security/ir.model.access.csv',
         'wizard/update_custom_view.xml',
         'view/custom_view.xml',
+        'view/account_custom_view.xml',
 
     ],
 }
