@@ -30,7 +30,6 @@ class SaleInvoiceAdvance(models.TransientModel):
     def _create_invoice(self):
         invoice = super(SaleInvoiceAdvance, self)._create_invoice()
         active_id = self._context.get('active_id')
-        invoice_data = self._prepare_invoice_values()
         if active_id:
             order_id = self.env['sale.order'].browse(active_id)
             for rec in order_id.sale_lines:
@@ -41,18 +40,18 @@ class SaleInvoiceAdvance(models.TransientModel):
                 account_line = self.env['account.custom.line'].create(data)
                 print(account_line)
         return invoice
-
-    def _prepare_invoice_values(self):
-        invoice_data = {
-            'account_custom_lines': [({
-                'name': self.name,
-                'price_unit': self.price_unit,
-                'quantity': self.quantity,
-                'product_id': self.product_id.id,
-                'price_subtotal': self.price_subtotal
-            })],
-        }
-        return invoice_data
+   
+    # def _prepare_invoice_values(self):
+    #     invoice_data = {
+    #         'account_custom_lines': [({
+    #             'name': self.name,
+    #             'price_unit': self.price_unit,
+    #             'quantity': self.quantity,
+    #             'product_id': self.product_id.id,
+    #             'price_subtotal': self.price_subtotal
+    #         })],
+    #     }
+    #     return invoice_data
 
     # def action_confirm(self):
     #     for rec in self:
