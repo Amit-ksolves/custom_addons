@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_sale_order_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <br/>
+                        <br/>
+                        <ul>
+                            <h2>
+                                Order #
+                                <span t-field="o.name"/>
+                            </h2>
+                            Customer:
+                            <td>
+                                  <span t-field="o.partner_id"/>
+                            <br/>
+                            </td>
+                            Order Date:
+                            <span t-field="o.date_order"/>
+                            <br/>
+                            Payment Terms:
+                            <span t-field="o.payment_term_id.name"/>
+                            <br/>
+                        </ul>
+                        <table class="table table-sm o_main_table">
+                            <thead style="display: table-row-group">
+                                <tr>
+                                    <strong>
+                                        <th>Product</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Subtotal</th>
+                                    </strong>
+                                </tr>
+                            </thead>
+                            <tbody class="sale_tbody">
+                                <t t-foreach="o.sale_lines" t-as="sl">
+                                    <tr>
+                                        <td>
+                                            <span t-field="sl.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="sl.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="sl.quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="sl.price_unit"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="sl.price_subtotal"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="clearfix" name="so_total_summary">
+                            <div id="total" class="row" name="total">
+                                <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
+                                    <table class="table table-sm">
+                                        <!-- Tax totals -->
+                                        <t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
+                                        <t t-call="account.document_tax_totals"/>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+            id="report_sale_order_id"
+            string="Custom Sale Order Card"
+            model="sale.order"
+            report_type="qweb-pdf"
+            name="custom.report_sale_order_template"
+            file="custom.report_sale_order_template"/>
+
+    <report
+            id="report_sale_order_xlx"
+            string="Custom Excel Sheet"
+            model="sale.order"
+            report_type="xls"
+            name="custom.report_sale_xls"
+            file="custom.report_sale_xls"/>
+</odoo>
+
