@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="billing_form" model="ir.ui.view">
+        <field name="name">hospital.billing.form</field>
+        <field name="model">hospital.billing</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="patient_id"/>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="bill"/>
+                        <field name="expenses"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="billing_action" model="ir.actions.act_window">
+        <field name="name">Billing</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.billing</field>
+        <field name="view_mode">form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Bill
+            </p>
+        </field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem id="hospital_root"
+              name="Hospital"
+              sequence="10"/>
+
+    <menuitem id="hospital_billing_root"
+              name="Billing"
+              parent="hospital_root"
+              sequence="2"/>
+
+    <menuitem id="hospital_billing"
+              name="Billing"
+              parent="hospital_billing_root"
+              action="billing_action"
+              sequence="2"/>
+</odoo>

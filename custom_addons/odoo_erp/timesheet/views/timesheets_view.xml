@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="action_wizard_open" model="ir.actions.server">
+        <field name="name">Price Details</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if record:
+            action_values = env.ref('real_estate.estate_price_wizard').sudo().read()[0]
+            action_values.update({'context': env.context})
+            action = action_values
+        </field>
+    </record>
+
+    <record id="view_property_tree" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="property_type"/>
+                <field name="postcode"/>
+                <field name="available_from"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <widget name="web_ribbon" title="Booked" bg_color="bg-danger"
+                            attrs="{'invisible': [('done', '=', False)]}"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                            <field name="property_type"/>
+                            <field name="postcode"/>
+                        </group>
+                        <group>
+                            <field name="available_from"/>
+                            <field name="expect_price"/>
+                            <field name="best_offer"/>
+                            <field name="sell_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="garden"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Offers" name="Offers">
+                            <tree editable="bottom">
+                                <field name="price"/>
+                                <field name="validity"/>
+                                <field name="deadline"/>
+                            </tree>
+                        </page>
+                        <page string="Other Info" name="Other Info">
+                            <group>
+                                <field name="buyer"/>
+                                <field name="salesperson"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="property_action" model="ir.actions.act_window">
+        <field name="name">Property</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Property
+            </p>
+        </field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem id="estate_root"
+              name="Estate"
+              sequence="1"/>
+
+    <menuitem id="estate_property_root"
+              name="Property"
+              parent="estate_root"
+              sequence="2"/>
+
+    <menuitem id="estate_property"
+              name="Property"
+              parent="estate_property_root"
+              action="property_action"
+              sequence="2"/>
+
+</odoo>

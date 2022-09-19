@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="action_wizard" model="ir.actions.server">
+        <field name="name">Price List</field>
+        <field name="model_id" ref="model_estate_owners"/>
+        <field name="binding_model_id" ref="real_estate.model_estate_owners"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if record:
+            action_values = env.ref('real_estate.estate_price_wizard').sudo().read()[0]
+            action_values.update({'context': env.context})
+            action = action_values
+        </field>
+    </record>
+
+
+    <record id="view_owners_tree" model="ir.ui.view">
+        <field name="name">estate.owners.tree</field>
+        <field name="model">estate.owners</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="contact"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_owners_form" model="ir.ui.view">
+        <field name="name">estate.owners.form</field>
+        <field name="model">estate.owners</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header//button[@name='action_update']" position="after">
+                <button name="%(real_estate.estate_price_wizard)d" type="action" string="Property Details"
+                        class="oe_highlight"/>
+            </xpath>
+            <form>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="contact"/>
+                    </group>
+                    <group>
+                        <field name="property_ids"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="owners_action" model="ir.actions.act_window">
+        <field name="name">Owners</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">estate.owners</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Property
+            </p>
+        </field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem id="estate_root"
+              name="Estate"
+              sequence="1"/>
+
+    <menuitem id="estate_owners_root"
+              name="Owners"
+              parent="estate_root"
+              sequence="2"/>
+
+    <menuitem id="estate_owners"
+              name="Owners"
+              parent="estate_owners_root"
+              action="owners_action"
+              sequence="2"/>
+
+</odoo>
