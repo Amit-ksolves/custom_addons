@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_custom_contacts,access.custom.contacts,model_custom_contacts,custom_contacts.custom_contacts_user,1,0,0,0
+access_custom_admin,access.custom.admin,model_custom_contacts,custom_contacts.custom_contacts_admin,1,1,1,1
+
+access_custom_contacts,access.custom.contacts,model_custom_contacts,base.group_user,1,1,1,1
+access_wiz_blacklist,access.wiz.blacklist,model_wiz_blacklist,base.group_user,1,1,1,1
+
